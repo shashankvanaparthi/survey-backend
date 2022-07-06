@@ -1,4 +1,4 @@
-name: DEPLOYING BACKEND
+name: DEPLOYING BACKEND To AWS
 
 on: 
   pull_request:
