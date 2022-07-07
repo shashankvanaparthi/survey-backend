@@ -12,7 +12,7 @@ app.options('*',cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/",(req,res) => {
-    res.json({message:'Welcome to app'});
+    res.json({message:'Welcome to survey application'});
 })
 
 const PORT = process.env.PORT || 3000;
@@ -33,5 +33,5 @@ function initial() {
 require("./app/routes/routes.js")(app);
 
 app.listen(PORT,() => {
-    console.log("Server is running ${PORT}");
+    console.log(`Server is running ${PORT}.`);
 })
