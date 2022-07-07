@@ -19,6 +19,7 @@ db.Sequelize  = Sequelize;
 db.sequelize  = sequelize;
 db.User = require('./user.js')(sequelize,Sequelize);
 db.role = require('./roles.js')(sequelize,Sequelize);
+db.Survey = require('./survey.js')(sequelize,Sequelize);
 
 db.role.belongsToMany(db.User, {
     through: "user_roles",
@@ -31,5 +32,11 @@ db.User.belongsToMany(db.role, {
     otherKey: "roleId"
   });
 db.ROLES = ["superadmin", "semiadmin", "user"];
+
+db.Survey.belongsTo(db.User,{
+    foreignKey : "userId",
+    as:"userid",
+  });
+
   
 module.exports = db;
