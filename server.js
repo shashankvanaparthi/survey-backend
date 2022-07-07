@@ -5,16 +5,17 @@ const app        = express();
 const db         = require('./app/models');
 const Role       = db.role;
 var corsOptions  = {
-    origin:"http://localhost:8081"
+    origin:"*"
 };
 app.use(cors(corsOptions));
+app.options('*',cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/",(req,res) => {
     res.json({message:'Welcome to app'});
 })
 
-const PORT = 8081;
+const PORT = process.env.PORT || 3000;
 
 db.sequelize.sync().then(() => {
     console.log("DB connected sucessfully..!!");
@@ -32,5 +33,5 @@ function initial() {
 require("./app/routes/routes.js")(app);
 
 app.listen(PORT,() => {
-    console.log("Server is running ");
+    console.log("Server is running ${PORT}");
 })
