@@ -1,39 +1,36 @@
-const express = require("express");
-const cors = require("cors");
-const dotenv = require('dotenv');
-dotenv.config();
-
-const app = express();
-var corsOptions = {
-  origin: '*',
+const express    = require('express');
+const bodyParser = require('body-parser');
+const cors       = require('cors');
+const app        = express();
+const db         = require('./app/models');
+const Role       = db.role;
+var corsOptions  = {
+    origin:"http://localhost:8081"
 };
-
 app.use(cors(corsOptions));
-app.options('*', cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.get("/",(req,res) => {
+    res.json({message:'Welcome to app'});
+})
 
-// parse requests of content-type - application/json
-app.use(express.json());
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
-// set up database
-const db = require("./app/models");
-// for not to recreate each time database but add new things
-db.sequelize.sync({alter:true});
-// for devel to recreate each time database
-//db.sequelize.sync({ force: true }).then(() => {
-//   console.log("Drop and re-sync db.");
-//});
-// simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to album application." });
-});
-// require("./app/routes/user.routes")(app);
-// require("./app/routes/album.routes")(app);
-// require("./app/routes/tracks.routes")(app);
-// require("./app/routes/artist.routes")(app);
+const PORT = 8081;
 
-// set port, listen for requests
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
+db.sequelize.sync().then(() => {
+    console.log("DB connected sucessfully..!!");
+    /*initial();*/
 });
+
+function initial() {
+    Role.create({
+        id: 1,
+        name: "superadmin"
+      });
+    
+}
+
+require("./app/routes/routes.js")(app);
+
+app.listen(PORT,() => {
+    console.log("Server is running ");
+})
