@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const config = require('./../config/config.js');
 const db = require('./../models');
 const User = db.User;
 const Survey = db.Survey;
@@ -12,7 +11,7 @@ verifyToken = (req,res,next) => {
             msg:'No token provided.!'
         });
     }
-    jwt.verify(token,config.secret,(err,decoded) => {
+    jwt.verify(token,process.env.SECRETE,(err,decoded) => {
         if(err) {
             return res.status(403).send({
                 msg:'Un authorized'
@@ -68,22 +67,6 @@ isSuperOrSemiAdmin = (req,res,next) => {
     })
 }
 
-/*isSurveyCreated = (req,res,next) => {
-    Survey.findByPk(req.survey.dataValues.id).then(survey => {
-        if(!survey) {
-            res.status(400).json({
-                success:false,
-                msg:'Create a Survey first'
-            }) 
-        }
-        next();
-    }).catch(err => {
-        return res.status(400).send({
-            msg:err.message
-        })
-    })
-}*/
-
 isSurveyValid = (req,res,next) => {
     Survey.findByPk(req.params.id).then(survey => {
         if(!survey) {
@@ -133,13 +116,6 @@ isUserCreatedSurvey = (req,res,next) => {
 }
 
 isSurveySelected = (req,res,next) => {
-    /*console.log(req);
-    if(req.survey==undefined) {
-        return res.status(403).json({
-            success:false,
-            msg:'select a  survey first'
-        })
-    }*/
     next();
 }
 

@@ -1,14 +1,14 @@
 module.exports = app => {
-    const User = require('../controllers/user.js');
+    const User = require('../controllers/user.controller.js');
     const Survey = require('../controllers/survey.js');
     const Question = require('../controllers/question.js');
     const Option = require('../controllers/option.js');
     const authJwt = require('../middleware/authJwt.js');
     var router = require('express').Router();
     //user routes
-    router.post('/',User.create);
-    router.post('/signin',User.signin);
-    router.post('/createSemiAdmin',authJwt.verifyToken,authJwt.isSuperAdmin,User.createSemiAdmin);
+    router.post('/signin',User.signin); 
+    router.post('/signup',User.signup);
+    
     //Survey routes
     router.post('/createSurvey',authJwt.verifyToken,authJwt.isSuperOrSemiAdmin,Survey.createSurvey);
     router.get('/getAllSurveys',authJwt.verifyToken,authJwt.isSuperOrSemiAdmin,User.getAllSurveys);
@@ -26,6 +26,6 @@ module.exports = app => {
     router.patch('/editOption/:id',authJwt.verifyToken,authJwt.isSuperOrSemiAdmin,Option.editOption);
     router.delete('/deleteOption/:id',authJwt.verifyToken,authJwt.isSuperOrSemiAdmin,Option.deleteOption);
     
-    app.use('/api/v1/user',router);
+    app.use('/api/v1/',router);
 
 }
