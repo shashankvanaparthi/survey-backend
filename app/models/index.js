@@ -18,7 +18,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.User = require('./user.model.js')(sequelize, Sequelize);
-db.Survey = require('./survey.js')(sequelize, Sequelize);
+db.Survey = require('./survey.model.js')(sequelize, Sequelize);
 db.Question = require('./question.js')(sequelize, Sequelize);
 db.Options = require('./options.js')(sequelize, Sequelize);
 

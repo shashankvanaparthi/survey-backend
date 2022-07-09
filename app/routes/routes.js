@@ -1,6 +1,6 @@
 module.exports = app => {
     const User = require('../controllers/user.controller.js');
-    const Survey = require('../controllers/survey.js');
+    const Survey = require('../controllers/survey.controller.js');
     const Question = require('../controllers/question.js');
     const Option = require('../controllers/option.js');
     const authJwt = require('../middleware/authJwt.js');
@@ -10,11 +10,11 @@ module.exports = app => {
     router.post('/signup',User.signup);
     
     //Survey routes
-    router.post('/createSurvey',authJwt.verifyToken,authJwt.isSuperOrSemiAdmin,Survey.createSurvey);
-    router.get('/getAllSurveys',authJwt.verifyToken,authJwt.isSuperOrSemiAdmin,User.getAllSurveys);
-    router.get('/editSurvey/:id',authJwt.verifyToken,authJwt.isSuperOrSemiAdmin,authJwt.isSurveyValid,authJwt.isUserCreatedSurvey,Survey.editSurvey);
-    router.delete('/deleteSurvey/:id',authJwt.verifyToken,authJwt.isSuperOrSemiAdmin,authJwt.isSurveyValid,authJwt.isUserCreatedSurvey,Survey.deleteSurvey);
-    router.get('/getSurveyQuestions/:id',authJwt.verifyToken,authJwt.isSuperOrSemiAdmin,authJwt.isSurveyValid,authJwt.isUserCreatedSurvey,Survey.getAllSurveyQuestions);
+    router.post('/createSurvey',Survey.createSurvey);
+    router.get('/survey/user/:id',Survey.getAllSurveysForUser);
+    router.put('/survey/:id',Survey.editSurvey);
+    router.delete('/survey/:id',Survey.deleteSurvey);
+    router.get('/getSurveyQuestions/:id',authJwt.verifyToken,Survey.getAllSurveyQuestions);
 
     //Question routes
     router.post('/addQuestion/:id',authJwt.verifyToken,authJwt.isSuperOrSemiAdmin,authJwt.isSurveyValid,authJwt.isUserCreatedSurvey,Question.createQuestion);    
