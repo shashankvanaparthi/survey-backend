@@ -73,44 +73,8 @@ exports.signin = (req, res) => {
     });
 };
 
-
-exports.getAllSurveys = (req, res) => {
-
-    if (req.userRole == "superadmin") {
-        Survey.findAll().then((sd) => {
-
-            return res.status(200).json({
-                success: true,
-                msg: 'The survey  are ',
-                data: {
-                    sd
-                }
-            })
-        }).catch(err => {
-            return res.status(400).json({
-                success: false,
-                msg: err.message
-            })
-        })
-    }
-
-    else {
-        User.findByPk(req.userId, { include: ['surveys'] }).then((surveydata) => {
-            const data = surveydata.surveys;
-            return res.status(200).json({
-                success: true,
-                msg: 'The surveys are ',
-                data: {
-                    data
-                }
-            })
-        }).catch(err => {
-            return res.status(400).json({
-                success: false,
-                msg: err.message
-            })
-        })
-    }
-
+exports.getAllSurveysForAdmin = async (req, res) => {
+    const surveys = await Survey.findAll()
+    res.status(200).json(surveys);
 }
 
