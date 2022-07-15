@@ -78,3 +78,26 @@ exports.getAllSurveysForAdmin = async (req, res) => {
     res.status(200).json(surveys);
 }
 
+exports.getUserDetails= async (req,res)=>{
+    const userId = req.params.id
+    const user = await User.findOne(
+      {
+        where:{
+          id: userId
+        },
+        attributes: {exclude: ['password']},
+      }
+    )
+    res.status(200).json(user)
+  }
+  
+  
+  exports.updateUserDetails = async (req,res)=>{
+    const userDetails = req.body.user;
+    User.update({firstName:userDetails.firstName,lastName:userDetails.lastName},{ where: { id: userDetails.id } }).then(response=>{
+      res.status(200).json({ "message": "Update Success" })
+    },err=>{
+      console.log(err)
+      res.status(400).json({"error":"something Went Wrong"})
+    })
+  }

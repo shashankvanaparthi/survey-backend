@@ -1,18 +1,18 @@
 module.exports = (sequelize,Sequelize) => {
     const Question = sequelize.define("questions",{
-        description : {
+        question : {
             type:Sequelize.STRING,
             allowNull:false,
             validate:{
                 notEmpty: {
                     args: true,
                     msg:"Question description can\'t be empty..!"
-                },
-                len: {
-                    args: [4,520],
-                    msg: 'Please provide Question field within 4 to 520 characters.'
-                  }
+                }
             }
+        },
+        questionType: {
+            type: Sequelize.ENUM,
+            values: ['CHOICE','BOOLEAN','SCALE']
         }
     })
     return Question;

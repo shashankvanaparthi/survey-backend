@@ -19,38 +19,33 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.User = require('./user.model.js')(sequelize, Sequelize);
 db.Survey = require('./survey.model.js')(sequelize, Sequelize);
-db.Question = require('./question.js')(sequelize, Sequelize);
-db.Options = require('./options.js')(sequelize, Sequelize);
+db.Question = require('./question.model.js')(sequelize, Sequelize);
+db.Options = require('./option.model.js')(sequelize, Sequelize);
 
 db.User.hasMany(db.Survey, { as: "surveys" });
+db.User.hasMany(db.Question, { as: "questions" });
 
 db.Survey.belongsTo(db.User, {
   foreignKey: "userId",
   as: "userid",
 });
 
-db.Survey.hasMany(db.Question, { as: "questions" });
+db.Survey.belongsToMany(db.Question,{
+  through: "survey_question",
+  as: "questions",
+  foreignKey: "surveyId"
+})
 
-db.Question.belongsTo(db.Survey, {
-  foreignKey: "surveyId",
-  as: "surveyid",
+db.Question.belongsToMany(db.Survey, {
+  through: "survey_question",
+  as: "surveys",
+  foreignKey: "questionId"
 });
 
 db.Question.hasMany(db.Options, { as: "options" });
 db.Options.belongsTo(db.Question, {
   foreignKey: "questionId",
   as: "questionid",
-
 });
-
-db.Survey.hasMany(db.Question, {
-  onDelete: 'cascade',
-  hooks: true,
-});
-
-db.Question.hasMany(db.Options, {
-  onDelete: 'cascade',
-  hooks: true,
-})
 
 module.exports = db;

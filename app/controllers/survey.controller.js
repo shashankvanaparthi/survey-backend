@@ -1,3 +1,4 @@
+const { Question } = require('../models');
 const db = require('../models');
 const Survey = db.Survey;
 
@@ -13,6 +14,7 @@ exports.editSurvey = async (req, res) => {
 }
 
 exports.deleteSurvey = async (req, res) => {
+    console.log("In deleteSurvey is called")
     const survey = await Survey.findByPk(req.params.id);
     if (!survey) {
         return res.status(404).json({
@@ -32,32 +34,73 @@ exports.deleteSurvey = async (req, res) => {
 
 exports.getAllSurveysForUser = async (req, res) => {
     const userId = req.params.id;
-    console.log("getAllSurveysForUser is called "+userId)
+    console.log("getAllSurveysForUser is called " + userId)
     const surveys = await Survey.findAll(
-        {where: { userId: userId }}
+        {
+            include: [{
+                model: Question,
+                as: "questions"
+            }],
+            where: { userId: userId }
+        }
     )
     res.status(200).json(surveys);
 }
 
+exports.addQuestionToSurvey = async (req,res) => {
+    const surveyId = req.body.surveyId;
+    const questId = req.body.questId;
+    console.log("SurveyId: ", surveyId, "QuestId: ", questId);
+    const survey = await Survey.findByPk(surveyId)
+    if (!survey) {
+        console.log("Survey Not Found")
+        res.status(404).json({ "message": "Survey Not Found" })
+    }
 
+    const question = await Question.findByPk(questId);
+    if (!question) {
+        console.log("Question Not Found");
+        res.status(404).json({ "message": "Question Not Found" })
+    }
+    await survey.addQuestion(question);
+    res.status(200).json(survey);
+}
 
-exports.getAllSurveyQuestions = (req, res) => {
+exports.deleteQuestionFromSurvey = async (req,res)=>{
+    console.log("deleteQuestionFromSurvey is called");
+    const surveyId = req.query.surveyId;
+    const questId = req.query.questId;
+    console.log("SurveyId: ",surveyId,"QuestId: ",questId);
+    const survey = await Survey.findByPk(surveyId)
+    if(!survey){
+        console.log("Survey Not Found")
+        res.status(404).json({"message":"Survey Not Found"})
+    }
 
-    Survey.findByPk(req.survey.dataValues.id, { include: ['questions'] }).then((surveydata) => {
-        const questions = surveydata.questions;
-        res.status(200).json({
-            success: true,
-            msg: 'The survey questions are ',
-            data: {
-                questions
-            }
+    const question = await Question.findByPk(questId);
+    if(!question){
+        console.log("Question Not Found");
+        res.status(404).json({"message":"Question Not Found"})
+    }
+    await survey.removeQuestion(question);
+    res.status(200).json(survey);
+}
+
+exports.getAllSurveyQuestions = async (req, res) => {
+    const surveyId = req.params.id;
+    const userId = req.query.userId;
+    console.log(surveyId);
+    console.log(req)
+    const sureveyDetails = await Survey.findByPk(surveyId,
+        {
+            include: [{
+                model: Question,
+                as: "questions"
+            }],
+            where: { userId: userId }
         })
-    }).catch(err => {
-        res.status(400).json({
-            success: false,
-            msg: err.message
-        })
-    })
+    console.log(sureveyDetails)
+    res.status(200).json(sureveyDetails)
 }
 
 
