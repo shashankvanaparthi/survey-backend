@@ -1,6 +1,7 @@
 const { Question } = require('../models');
 const db = require('../models');
 const Survey = db.Survey;
+const Option = db.Options
 
 exports.editSurvey = async (req, res) => {
     const userId = req.body.userId;
@@ -95,7 +96,8 @@ exports.getAllSurveyQuestions = async (req, res) => {
         {
             include: [{
                 model: Question,
-                as: "questions"
+                as: "questions",
+                include:[{model:Option,as:'options'}]
             }],
             where: { userId: userId }
         })
