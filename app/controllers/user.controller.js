@@ -101,3 +101,32 @@ exports.getUserDetails= async (req,res)=>{
       res.status(400).json({"error":"something Went Wrong"})
     })
   }
+
+exports.getAllUsers = async (req,res)=>{
+    const users = await User.findAll(
+        {
+          where:{
+            isAdmin: false
+          },
+          attributes: {exclude: ['password']},
+        })
+        res.status(200).json(users)
+}
+
+
+exports.deleteUser = async (req,res)=>{
+    const userId = req.params.id;
+    const user = await User.findOne({where: {id: userId}})
+    if(!user){
+        res.status(404).json({message:"User Not found"});
+    }else{
+        const delUser = await User.destroy({where:{id:userId}})
+        res.status(200).json({
+            success: true,
+            message: 'User deleted Sucessfully',
+            data: {
+                delUser
+            }
+        });
+    }
+}
