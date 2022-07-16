@@ -7,9 +7,10 @@ module.exports = app => {
     //user routes
     router.post('/signin',User.signin); 
     router.post('/signup',User.signup);
+    router.get("/user/all",User.getAllUsers)
     router.get("/user/:id",User.getUserDetails)
     router.put("/user/:id",User.updateUserDetails)
-    
+    router.delete("/user/:id",User.deleteUser)
     
     //Survey routes
     router.post('/createSurvey',Survey.createSurvey);
