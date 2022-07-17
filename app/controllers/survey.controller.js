@@ -89,7 +89,6 @@ exports.deleteQuestionFromSurvey = async (req,res)=>{
 
 exports.getAllSurveyQuestions = async (req, res) => {
     const surveyId = req.params.id;
-    const userId = req.query.userId;
     console.log(surveyId);
     console.log(req)
     const sureveyDetails = await Survey.findByPk(surveyId,
@@ -98,8 +97,7 @@ exports.getAllSurveyQuestions = async (req, res) => {
                 model: Question,
                 as: "questions",
                 include:[{model:Option,as:'options'}]
-            }],
-            where: { userId: userId }
+            }]
         })
     console.log(sureveyDetails)
     res.status(200).json(sureveyDetails)
