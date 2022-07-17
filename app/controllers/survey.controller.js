@@ -91,7 +91,7 @@ exports.getAllSurveyQuestions = async (req, res) => {
     const surveyId = req.params.id;
     console.log(surveyId);
     console.log(req)
-    const sureveyDetails = await Survey.findByPk(surveyId,
+    const surveyDetails = await Survey.findByPk(surveyId,
         {
             include: [{
                 model: Question,
@@ -99,8 +99,12 @@ exports.getAllSurveyQuestions = async (req, res) => {
                 include:[{model:Option,as:'options'}]
             }]
         })
-    console.log(sureveyDetails)
-    res.status(200).json(sureveyDetails)
+        if(!surveyDetails){
+            res.status(404).json({message:"Survey Not Found"});
+            return;
+        }
+    console.log(surveyDetails)
+    res.status(200).json(surveyDetails)
 }
 
 
