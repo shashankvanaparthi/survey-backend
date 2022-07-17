@@ -126,3 +126,9 @@ exports.createSurvey = async (req, res) => {
         })
     }
 }
+
+exports.getAllSurveys = async (req,res)=>{
+    console.log("In getAllSurveys");
+    const surveys =await Survey.findAll()
+    return res.status(200).json(surveys)
+}

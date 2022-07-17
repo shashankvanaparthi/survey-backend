@@ -17,6 +17,7 @@ module.exports = app => {
     router.get('/survey/user/:id',Survey.getAllSurveysForUser);
     router.put('/survey/:id',Survey.editSurvey);
     router.delete('/survey/:id',Survey.deleteSurvey);
+    router.get('/survey/all/',Survey.getAllSurveys);
     router.get('/survey/:id',Survey.getAllSurveyQuestions);
     router.post('/survey/addQuestion',Survey.addQuestionToSurvey);
     router.delete('/survey/question/deleteQuestion',Survey.deleteQuestionFromSurvey)
