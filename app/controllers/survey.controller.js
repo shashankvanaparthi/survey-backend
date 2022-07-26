@@ -1,4 +1,4 @@
-const { Question } = require('../models');
+const { Question, User } = require('../models');
 const db = require('../models');
 const Survey = db.Survey;
 const Option = db.Options
@@ -132,3 +132,26 @@ exports.getAllSurveys = async (req,res)=>{
     const surveys =await Survey.findAll()
     return res.status(200).json(surveys)
 }
+
+exports.getSurveysForReports = async (req,res) =>{
+    const userId = req.query.userId;
+    const user = await User.findByPk(userId);
+    if(!user){
+        res.status(400).json({message:"User Not Found"})
+        return;
+    }
+    console.log("#####################")
+    let surveys = []
+    console.log(user.isAdmin)
+    if(!user.isAdmin){
+        surveys = await Survey.findAll({
+            where:{
+                userId: userId
+            }
+        }) 
+    }else{
+        surveys = await Survey.findAll()
+    }
+    res.status(200).json(surveys)
+}
+

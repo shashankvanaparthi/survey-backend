@@ -8,12 +8,6 @@ exports.deleteQuestion = async (req, res) => {
     try {
         const quesId = req.body.quesId;
         const userId = req.params.id;
-        console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-        console.log(req)
-        console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-        console.log(quesId)
-        console.log(userId)
-
         const ques = await Question.findByPk(quesId);
         if (!ques) {
             return res.status(404).json({
@@ -57,14 +51,6 @@ exports.saveQuestionForUser = (req, res) => {
             }
         ],
     }).then(async ques => {
-        console.log("$$$$$$$$$$$$")
-        // console.log(ques);
-        // const temp = await ques.setOptions([
-        //     { value: "Test1" },
-        //     { value: "Test1" },
-        //     { value: "Test1" },
-        //     { value: "Test1" }
-        // ]) 
         console.log(ques)
         res.status(200).json({
             success: true,
