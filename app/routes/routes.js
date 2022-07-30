@@ -32,6 +32,7 @@ module.exports = app => {
     //Reports routes
     router.post("/saveReport",Report.saveReport)
     router.get("/getReport/:id",Report.getReport)
+    router.get("/getAllAnswers",Report.getAllAnswers)
 
     app.use('/api/v1/',router);
 

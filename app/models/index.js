@@ -62,6 +62,12 @@ db.Answers.belongsTo(db.Question, {
   foreignKey: "questionId",
   as: "question",
 });
+
+db.Answers.belongsTo(db.Options, {
+  foreignKey: "optionId",
+  as: "answer",
+});
+
 // db.Answers.belongsTo(db.Options, {
 //   foreignKey: "optionId",
 //   as: "option",
