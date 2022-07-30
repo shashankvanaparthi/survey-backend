@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --recursive",
     "bundle": "mkdir deploy && cp -r app .env package.json package-lock.json server.js course-backend.service deploy && rm deploy/app/config/db.config.js && mv deploy/app/config/prod.db.config.js deploy/app/config/db.config.js"
   },
   "keywords": [
@@ -27,5 +27,10 @@
     "mysql2": "^2.3.3",
     "nodemailer": "^6.7.5",
     "sequelize": "^6.20.1"
+  },
+  "devDependencies": {
+    "mocha": "^2.5.3",
+    "sequelize-mock": "^0.10.2",
+    "supertest": "^6.2.4"
   }
 }
