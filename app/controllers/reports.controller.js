@@ -42,10 +42,15 @@ exports.getReport = async (req,res) =>{
         include: [{
             model: Answers,
             as: "answers",
-            include: [{model:Questions,as:"question"}]
-            // include: [{model:Options,as:"option"}]
+            include: [{model:Questions,as:"question"},{model:Options,as:"answer"}]
         }]
     })
     res.status(200).json(reports)
+}
+
+exports.getAllAnswers = async (req,res) => {
+    console.log("In getAllAnswers");
+    const answers = await Answers.findAll();
+    res.status(200).json(answers)
 }
 
